@@ -37,11 +37,22 @@ void AFFAircraft::BeginPlay() {
 }
 
 void AFFAircraft::TickMovement(float DeltaTime) {
+  if (InputComponent == nullptr)
+    return;
+
   float Vertical = InputComponent->GetAxisValue(VerticalInputName);
   float Horizontal = InputComponent->GetAxisValue(HorizontalInputName);
 
   AddMovementInput(Vertical * GetActorForwardVector() +
                    Horizontal * GetActorRightVector());
+
+  // Rolling
+  float RollTarget = Horizontal * MaxRoll;
+  FRotator NewRotator = AircraftContainComp->GetRelativeTransform().Rotator();
+  float RollDelta = FMath::FInterpTo(NewRotator.Roll, RollTarget, DeltaTime,
+                                     RollInterpSpeed);
+  NewRotator.Roll = RollDelta;
+  AircraftContainComp->SetRelativeRotation(NewRotator);
 }
 
 // Called every frame

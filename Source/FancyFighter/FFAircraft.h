@@ -15,8 +15,16 @@ class FANCYFIGHTER_API AFFAircraft : public APawn {
   // Sets default values for this pawn's properties
   AFFAircraft();
 
-  // Components
+ protected:
+  // Properties
+  UPROPERTY(Category = Aircraft, EditDefaultsOnly, BlueprintReadOnly)
+  float MaxRoll = 40.0f;
+
+  UPROPERTY(Category = Aircraft, EditDefaultsOnly, BlueprintReadOnly)
+  float RollInterpSpeed = 5.0f;
+
  private:
+  // Components
   UPROPERTY(Category = Components,
             VisibleAnywhere,
             BlueprintReadOnly,
@@ -37,15 +45,11 @@ class FANCYFIGHTER_API AFFAircraft : public APawn {
 
   class UInputComponent* InputComponent;
 
-  // Event handle
  private:
+  // Event handle
  protected:
   // Called when the game starts or when spawned
   virtual void BeginPlay() override;
-
-  // Tick functions
- private:
-  void TickMovement(float DeltaTime);
 
  public:
   // Called every frame
@@ -55,8 +59,12 @@ class FANCYFIGHTER_API AFFAircraft : public APawn {
   virtual void SetupPlayerInputComponent(
       class UInputComponent* PlayerInputComponent) override;
 
-  // Misc
+ private:
+  // Tick functions
+  void TickMovement(float DeltaTime);
+
  protected:
+  // Misc
   UPROPERTY(Category = InputName, EditDefaultsOnly)
   FName VerticalInputName = FName("Vertical");
 
