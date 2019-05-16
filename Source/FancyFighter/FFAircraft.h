@@ -41,7 +41,7 @@ class FANCYFIGHTER_API AFFAircraft : public APawn {
             VisibleAnywhere,
             BlueprintReadOnly,
             meta = (AllowPrivateAccess = "true"))
-  class UFloatingPawnMovement* MovementComp;
+  class UFFPlayerMovementComponnet* MovementComp;
 
   class UInputComponent* InputComponent;
 

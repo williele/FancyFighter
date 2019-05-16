@@ -5,6 +5,7 @@
 #include <Components/InputComponent.h>
 #include <Components/StaticMeshComponent.h>
 #include <GameFramework/FloatingPawnMovement.h>
+#include "Components/FFPlayerMovementComponnet.h"
 
 // Sets default values
 AFFAircraft::AFFAircraft() {
@@ -28,7 +29,7 @@ AFFAircraft::AFFAircraft() {
 #endif
 
   MovementComp =
-      CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
+      CreateDefaultSubobject<UFFPlayerMovementComponnet>(TEXT("Movement"));
 }
 
 // Called when the game starts or when spawned
@@ -49,8 +50,8 @@ void AFFAircraft::TickMovement(float DeltaTime) {
   // Rolling
   float RollTarget = Horizontal * MaxRoll;
   FRotator NewRotator = AircraftContainComp->GetRelativeTransform().Rotator();
-  float RollDelta = FMath::FInterpTo(NewRotator.Roll, RollTarget, DeltaTime,
-                                     RollInterpSpeed);
+  float RollDelta =
+      FMath::FInterpTo(NewRotator.Roll, RollTarget, DeltaTime, RollInterpSpeed);
   NewRotator.Roll = RollDelta;
   AircraftContainComp->SetRelativeRotation(NewRotator);
 }
