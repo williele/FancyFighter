@@ -27,9 +27,16 @@ class FANCYFIGHTER_API UFFWeapon : public USceneComponent {
             meta = (AllowPrivateAccess = "true"))
   float FireRate = 0.2f;
 
+  UPROPERTY(Category = Weapon,
+            EditDefaultsOnly,
+            meta = (AllowPrivateAccess = "true"))
+  TSubclassOf<class AFFBullet> BulletClass;
+
  public:
   // Getter
   bool GetIsPrimaryWeapon() { return bIsPrimaryWeapon; }
+
+  TSubclassOf<class AFFBullet> GetBulletClass() { return BulletClass; }
 
  public:
   // Actions

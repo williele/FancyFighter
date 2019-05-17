@@ -21,7 +21,6 @@ void UFFWeapon::Fire() {
 
 void UFFWeapon::DoFire() {
   // Do nothing here
-  UE_LOG(LogTemp, Warning, TEXT("Weapon fire"));
 }
 
 // Called when the game starts
