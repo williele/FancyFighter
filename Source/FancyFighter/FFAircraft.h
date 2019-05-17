@@ -45,11 +45,20 @@ class FANCYFIGHTER_API AFFAircraft : public APawn {
 
   class UInputComponent* InputComponent;
 
- private:
-  // Event handle
+ public:
+  // Actions
+  void BeginPrimaryFire();
+  void EndPrimaryFire();
+
+  void SecondaryFire();
+
  protected:
   // Called when the game starts or when spawned
   virtual void BeginPlay() override;
+
+ private:
+	 // Initialize functions
+  void InitializeGun();
 
  public:
   // Called every frame
@@ -62,12 +71,24 @@ class FANCYFIGHTER_API AFFAircraft : public APawn {
  private:
   // Tick functions
   void TickMovement(float DeltaTime);
+  void TickFire(float DeltaTime);
 
  protected:
   // Misc
+  bool bCanFire = false;
+
+  TArray<class UFFWeapon*> PrimaryWeapons;
+  TArray<class UFFWeapon*> SecondaryWeapons;
+
   UPROPERTY(Category = InputName, EditDefaultsOnly)
   FName VerticalInputName = FName("Vertical");
 
   UPROPERTY(Category = InputName, EditDefaultsOnly)
   FName HorizontalInputName = FName("Horizontal");
+
+  UPROPERTY(Category = InputName, EditDefaultsOnly)
+  FName PrimaryFireInputName = FName("PrimaryFire");
+
+  UPROPERTY(Category = InputName, EditDefaultsOnly)
+  FName SecondaryFireInputName = FName("SecondaryFire");
 };

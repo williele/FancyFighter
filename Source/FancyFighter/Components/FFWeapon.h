@@ -16,15 +16,28 @@ class FANCYFIGHTER_API UFFWeapon : public USceneComponent {
   UFFWeapon();
 
  private:
-  // Misc
+  // Properties
   UPROPERTY(Category = Weapon,
             EditDefaultsOnly,
             meta = (AllowPrivateAccess = "true"))
   bool bIsPrimaryWeapon = false;
 
+  UPROPERTY(Category = Weapon,
+            EditDefaultsOnly,
+            meta = (AllowPrivateAccess = "true"))
+  float FireRate = 0.2f;
+
  public:
-  // getter
+  // Getter
   bool GetIsPrimaryWeapon() { return bIsPrimaryWeapon; }
+
+ public:
+  // Actions
+  void Fire();
+
+ protected:
+  // Functionality
+  virtual void DoFire();
 
  protected:
   // Called when the game starts
@@ -36,4 +49,8 @@ class FANCYFIGHTER_API UFFWeapon : public USceneComponent {
       float DeltaTime,
       ELevelTick TickType,
       FActorComponentTickFunction* ThisTickFunction) override;
+
+ private:
+  // Misc
+  float NextFire = 0.0f;
 };

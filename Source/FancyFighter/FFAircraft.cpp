@@ -6,6 +6,7 @@
 #include <Components/StaticMeshComponent.h>
 #include <GameFramework/FloatingPawnMovement.h>
 #include "Components/FFPlayerMovementComponnet.h"
+#include "Components/FFWeapon.h"
 
 // Sets default values
 AFFAircraft::AFFAircraft() {
@@ -32,9 +33,41 @@ AFFAircraft::AFFAircraft() {
       CreateDefaultSubobject<UFFPlayerMovementComponnet>(TEXT("Movement"));
 }
 
+void AFFAircraft::BeginPrimaryFire() {
+  bCanFire = true;
+}
+
+void AFFAircraft::EndPrimaryFire() {
+  bCanFire = false;
+}
+
+void AFFAircraft::SecondaryFire() {
+  // Fire on secondary weapon
+  for (UFFWeapon* Weapon : SecondaryWeapons) {
+    Weapon->Fire();
+  }
+}
+
 // Called when the game starts or when spawned
 void AFFAircraft::BeginPlay() {
   Super::BeginPlay();
+
+  InitializeGun();
+}
+
+void AFFAircraft::InitializeGun() {
+  TArray<UFFWeapon*> Weapons;
+  GetComponents<UFFWeapon>(Weapons);
+
+  UE_LOG(LogTemp, Warning, TEXT("Aircraft has %d weapons"), Weapons.Num());
+
+  for (int16 Index = 0; Index < Weapons.Num(); ++Index) {
+    if (Weapons[Index]->GetIsPrimaryWeapon()) {
+      PrimaryWeapons.Add(Weapons[Index]);
+    } else {
+      SecondaryWeapons.Add(Weapons[Index]);
+    }
+  }
 }
 
 void AFFAircraft::TickMovement(float DeltaTime) {
@@ -56,11 +89,22 @@ void AFFAircraft::TickMovement(float DeltaTime) {
   AircraftContainComp->SetRelativeRotation(NewRotator);
 }
 
+void AFFAircraft::TickFire(float DeltaTime) {
+  if (!bCanFire)
+    return;
+
+  // Fire on primary weapon
+  for (UFFWeapon* Weapon : PrimaryWeapons) {
+    Weapon->Fire();
+  }
+}
+
 // Called every frame
 void AFFAircraft::Tick(float DeltaTime) {
   Super::Tick(DeltaTime);
 
   TickMovement(DeltaTime);
+  TickFire(DeltaTime);
 }
 
 // Called to bind functionality to input
@@ -72,4 +116,11 @@ void AFFAircraft::SetupPlayerInputComponent(
   // Binding input
   InputComponent->BindAxis(VerticalInputName);
   InputComponent->BindAxis(HorizontalInputName);
+
+  InputComponent->BindAction(PrimaryFireInputName, IE_Pressed, this,
+                             &AFFAircraft::BeginPrimaryFire);
+  InputComponent->BindAction(PrimaryFireInputName, IE_Released, this,
+                             &AFFAircraft::EndPrimaryFire);
+  InputComponent->BindAction(SecondaryFireInputName, IE_Pressed, this,
+                             &AFFAircraft::SecondaryFire);
 }
