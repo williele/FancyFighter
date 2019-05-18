@@ -2,6 +2,7 @@
 
 #include "FFWeaponBlaster.h"
 #include <Engine/World.h>
+#include <Kismet/GameplayStatics.h>
 #include "FFBullet.h"
 
 UFFWeaponBlaster::UFFWeaponBlaster() {}
@@ -13,4 +14,7 @@ void UFFWeaponBlaster::DoFire() {
   // Pawn the bullet
   AFFBullet* Bullet = GetWorld()->SpawnActor<AFFBullet>(
       GetBulletClass(), GetComponentLocation(), GetComponentRotation());
+
+  // Pawn emitter
+  UGameplayStatics::SpawnEmitterAttached(GetMuzzleEffect(), this, NAME_None);
 }

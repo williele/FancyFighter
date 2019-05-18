@@ -32,11 +32,22 @@ class FANCYFIGHTER_API UFFWeapon : public USceneComponent {
             meta = (AllowPrivateAccess = "true"))
   TSubclassOf<class AFFBullet> BulletClass;
 
+ private:
+  // VFX
+  UPROPERTY(Category = VisualEffects,
+            EditDefaultsOnly,
+            meta = (AllowPrivateAccess = "true"))
+  class UParticleSystem* MuzzleEffect;
+
  public:
   // Getter
   bool GetIsPrimaryWeapon() { return bIsPrimaryWeapon; }
 
   TSubclassOf<class AFFBullet> GetBulletClass() { return BulletClass; }
+
+  class UParticleSystem* GetMuzzleEffect() {
+    return MuzzleEffect;
+  }
 
  public:
   // Actions
