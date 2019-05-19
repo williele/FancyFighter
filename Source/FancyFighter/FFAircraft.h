@@ -20,6 +20,9 @@ class FANCYFIGHTER_API AFFAircraft : public APawn {
   UPROPERTY(Category = Aircraft, EditDefaultsOnly, BlueprintReadOnly)
   float MaxRoll = 40.0f;
 
+	UPROPERTY(Category = Aircraft, EditDefaultsOnly, BlueprintReadOnly)
+  float TurnSpeed = 2.0f;
+
   UPROPERTY(Category = Aircraft, EditDefaultsOnly, BlueprintReadOnly)
   float RollInterpSpeed = 5.0f;
 
@@ -41,7 +44,19 @@ class FANCYFIGHTER_API AFFAircraft : public APawn {
             VisibleAnywhere,
             BlueprintReadOnly,
             meta = (AllowPrivateAccess = "true"))
-  class UFFPlayerMovementComponnet* MovementComp;
+  class USpringArmComponent* SpringArmComp;
+
+  UPROPERTY(Category = Components,
+            VisibleAnywhere,
+            BlueprintReadOnly,
+            meta = (AllowPrivateAccess = "true"))
+  class UCameraComponent* CameraComp;
+
+	UPROPERTY(Category = Components,
+            VisibleAnywhere,
+            BlueprintReadOnly,
+            meta = (AllowPrivateAccess = "true"))
+  class UFloatingPawnMovement* MovementComp;
 
   class UInputComponent* InputComponent;
 
@@ -57,7 +72,7 @@ class FANCYFIGHTER_API AFFAircraft : public APawn {
   virtual void BeginPlay() override;
 
  private:
-	 // Initialize functions
+  // Initialize functions
   void InitializeGun();
 
  public:

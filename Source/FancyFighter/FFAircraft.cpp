@@ -1,10 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "FFAircraft.h"
+#include <Camera/CameraComponent.h>
 #include <Components/ArrowComponent.h>
 #include <Components/InputComponent.h>
 #include <Components/StaticMeshComponent.h>
 #include <GameFramework/FloatingPawnMovement.h>
+#include <GameFramework/SpringArmComponent.h>
 #include "Components/FFPlayerMovementComponnet.h"
 #include "Components/FFWeapon.h"
 
@@ -29,8 +31,20 @@ AFFAircraft::AFFAircraft() {
   AircraftComp->SetupAttachment(AircraftContainComp);
 #endif
 
+  SpringArmComp =
+      CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+  SpringArmComp->bEnableCameraLag = true;
+  SpringArmComp->bInheritYaw = false;
+  SpringArmComp->bInheritPitch = false;
+  SpringArmComp->bInheritRoll = false;
+  SpringArmComp->bDoCollisionTest = false;
+  SpringArmComp->SetupAttachment(AircraftContainComp);
+
+  CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+  CameraComp->SetupAttachment(SpringArmComp);
+
   MovementComp =
-      CreateDefaultSubobject<UFFPlayerMovementComponnet>(TEXT("Movement"));
+      CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
 }
 
 void AFFAircraft::BeginPrimaryFire() {
@@ -59,8 +73,6 @@ void AFFAircraft::InitializeGun() {
   TArray<UFFWeapon*> Weapons;
   GetComponents<UFFWeapon>(Weapons);
 
-  UE_LOG(LogTemp, Warning, TEXT("Aircraft has %d weapons"), Weapons.Num());
-
   for (int16 Index = 0; Index < Weapons.Num(); ++Index) {
     if (Weapons[Index]->GetIsPrimaryWeapon()) {
       PrimaryWeapons.Add(Weapons[Index]);
@@ -76,12 +88,15 @@ void AFFAircraft::TickMovement(float DeltaTime) {
 
   float Vertical = InputComponent->GetAxisValue(VerticalInputName);
   float Horizontal = InputComponent->GetAxisValue(HorizontalInputName);
+  AddMovementInput(Vertical * GetActorForwardVector());
 
-  AddMovementInput(Vertical * GetActorForwardVector() +
-                   Horizontal * GetActorRightVector());
+  // Turning
+  float YawDelta = MovementComp->Velocity.Size() / MovementComp->GetMaxSpeed() *
+                   Horizontal * Vertical;
+  AddActorWorldRotation(FRotator(0.0f, YawDelta * TurnSpeed, 0.0f));
 
   // Rolling
-  float RollTarget = Horizontal * MaxRoll;
+  float RollTarget = YawDelta * MaxRoll;
   FRotator NewRotator = AircraftContainComp->GetRelativeTransform().Rotator();
   float RollDelta =
       FMath::FInterpTo(NewRotator.Roll, RollTarget, DeltaTime, RollInterpSpeed);
