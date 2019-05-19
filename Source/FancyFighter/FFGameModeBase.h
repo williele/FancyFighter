@@ -21,36 +21,65 @@ class FANCYFIGHTER_API AFFGameModeBase : public AGameModeBase {
   virtual void BeginPlay() override;
 
  private:
-  UPROPERTY(Category = GameModeMisc,
+  UPROPERTY(Category = PlayerLimit,
             EditDefaultsOnly,
             BlueprintReadOnly,
             meta = (AllowPrivateAccess = "true"))
-  float HorizontalMin = -400.0f;
+  float PlayerHorizontalMin = -400.0f;
+  UPROPERTY(Category = PlayerLimit,
+            EditDefaultsOnly,
+            BlueprintReadOnly,
+            meta = (AllowPrivateAccess = "true"))
+  float PlayerHorizontalMax = 400.0f;
+  UPROPERTY(Category = PlayerLimit,
+            EditDefaultsOnly,
+            BlueprintReadOnly,
+            meta = (AllowPrivateAccess = "true"))
+  float PlayerVerticalMin = -400.0f;
+  UPROPERTY(Category = PlayerLimit,
+            EditDefaultsOnly,
+            BlueprintReadOnly,
+            meta = (AllowPrivateAccess = "true"))
+  float PlayerVerticalMax = 400.0f;
 
-  UPROPERTY(Category = GameModeMisc,
+	UPROPERTY(Category = SceneLimit,
             EditDefaultsOnly,
             BlueprintReadOnly,
             meta = (AllowPrivateAccess = "true"))
-  float HorizontalMax = 400.0f;
+  float SceneLimitScale = 1.0f;
 
-  UPROPERTY(Category = GameModeMisc,
+  UPROPERTY(Category = SceneLimit,
             EditDefaultsOnly,
             BlueprintReadOnly,
             meta = (AllowPrivateAccess = "true"))
-  float VerticalMin = -400.0f;
-
-  UPROPERTY(Category = GameModeMisc,
+  float HorizontalMin = -1000.0f;
+  UPROPERTY(Category = SceneLimit,
             EditDefaultsOnly,
             BlueprintReadOnly,
             meta = (AllowPrivateAccess = "true"))
-  float VerticalMax = 400.0f;
+  float HorizontalMax = 1000.0f;
+  UPROPERTY(Category = SceneLimit,
+            EditDefaultsOnly,
+            BlueprintReadOnly,
+            meta = (AllowPrivateAccess = "true"))
+  float VerticalMin = -1000.0f;
+  UPROPERTY(Category = SceneLimit,
+            EditDefaultsOnly,
+            BlueprintReadOnly,
+            meta = (AllowPrivateAccess = "true"))
+  float VerticalMax = 1000.0f;
 
  public:
   // Getter
-  float GetHorizontalMin() { return HorizontalMin; }
-  float GetHorizontalMax() { return HorizontalMax; }
-  float GetVerticalMin() { return VerticalMin; }
-  float GetVerticalMax() { return VerticalMax; }
+  float GetPlayerHorizontalMin() { return PlayerHorizontalMin; }
+  float GetPlayerHorizontalMax() { return PlayerHorizontalMax; }
+  float GetPlayerVerticalMin() { return PlayerVerticalMin; }
+  float GetPlayerVerticalMax() { return PlayerVerticalMax; }
+
+  float GetHorizontalMin() { return HorizontalMin * SceneLimitScale; }
+  float GetHorizontalMax() { return HorizontalMax * SceneLimitScale; }
+  float GetVerticalMin() { return VerticalMin * SceneLimitScale; }
+  float GetVerticalMax() { return VerticalMax * SceneLimitScale; }
 
  public:
   virtual void Tick(float DeltaSeconds) override;

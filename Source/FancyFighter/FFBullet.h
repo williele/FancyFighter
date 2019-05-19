@@ -23,6 +23,12 @@ class FANCYFIGHTER_API AFFBullet : public AActor {
             meta = (AllowPrivateAccess = "true"))
   class UProjectileMovementComponent* ProjectileComponent;
 
+  UPROPERTY(Category = Components,
+            VisibleAnywhere,
+            BlueprintReadOnly,
+            meta = (AllowPrivateAccess = "true"))
+  class UFFLimitInScene* LimitInSceneComponent;
+
  protected:
   // Called when the game starts or when spawned
   virtual void BeginPlay() override;

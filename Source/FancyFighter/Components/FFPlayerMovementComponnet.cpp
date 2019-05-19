@@ -21,16 +21,16 @@ void UFFPlayerMovementComponnet::TickComponent(
 
   FVector ActorLocation = GetActorLocation();
 
-  if (ActorLocation.X < GameMode->GetVerticalMin()) {
-    ActorLocation.X = GameMode->GetVerticalMin();
-  } else if (ActorLocation.X > GameMode->GetVerticalMax()) {
-    ActorLocation.X = GameMode->GetVerticalMax();
+  if (ActorLocation.X < GameMode->GetPlayerVerticalMin()) {
+    ActorLocation.X = GameMode->GetPlayerVerticalMin();
+  } else if (ActorLocation.X > GameMode->GetPlayerVerticalMax()) {
+    ActorLocation.X = GameMode->GetPlayerVerticalMax();
   }
 
-  if (ActorLocation.Y < GameMode->GetHorizontalMin()) {
-    ActorLocation.Y = GameMode->GetHorizontalMin();
-  } else if (ActorLocation.Y > GameMode->GetHorizontalMax()) {
-    ActorLocation.Y = GameMode->GetHorizontalMax();
+  if (ActorLocation.Y < GameMode->GetPlayerHorizontalMin()) {
+    ActorLocation.Y = GameMode->GetPlayerHorizontalMin();
+  } else if (ActorLocation.Y > GameMode->GetPlayerHorizontalMax()) {
+    ActorLocation.Y = GameMode->GetPlayerHorizontalMax();
   }
 
   GetOwner()->SetActorLocation(ActorLocation);
