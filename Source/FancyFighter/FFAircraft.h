@@ -64,7 +64,22 @@ class FANCYFIGHTER_API AFFAircraft : public APawn {
             meta = (AllowPrivateAccess = "true"))
   class UFloatingPawnMovement* MovementComp;
 
+  UPROPERTY(Category = Components,
+            VisibleAnywhere,
+            BlueprintReadOnly,
+            meta = (AllowPrivateAccess = "true"))
+  class UFFDurabilityComponent* DurabilityComp;
+
   class UInputComponent* InputComponent;
+
+ private:
+  // Events handler
+  UFUNCTION()
+  void HitHandle(UPrimitiveComponent* HitComponent,
+                 AActor* OtherActor,
+                 UPrimitiveComponent* OtherComp,
+                 FVector NormalImpulse,
+                 const FHitResult& Hit);
 
  public:
   // Actions
@@ -99,6 +114,8 @@ class FANCYFIGHTER_API AFFAircraft : public APawn {
  protected:
   // Misc
   bool bCanFire = false;
+
+  TSubclassOf<class UDamageType> HitDamageType;
 
   TArray<class UFFWeapon*> PrimaryWeapons;
   TArray<class UFFWeapon*> SecondaryWeapons;

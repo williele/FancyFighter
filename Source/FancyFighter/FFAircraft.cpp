@@ -8,6 +8,8 @@
 #include <Components/StaticMeshComponent.h>
 #include <GameFramework/FloatingPawnMovement.h>
 #include <GameFramework/SpringArmComponent.h>
+#include <Kismet/GameplayStatics.h>
+#include "Components/FFDurabilityComponent.h"
 #include "Components/FFEngineEffectComponent.h"
 #include "Components/FFPlayerMovementComponnet.h"
 #include "Components/FFWeapon.h"
@@ -20,6 +22,7 @@ AFFAircraft::AFFAircraft() {
 
   // RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
   CapsuleComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
+  CapsuleComp->SetNotifyRigidBodyCollision(true);
   RootComponent = (USceneComponent*)CapsuleComp;
 
   AircraftContainComp =
@@ -49,6 +52,21 @@ AFFAircraft::AFFAircraft() {
 
   MovementComp =
       CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
+
+  DurabilityComp =
+      CreateDefaultSubobject<UFFDurabilityComponent>(TEXT("Durability"));
+
+  // Binding events
+  CapsuleComp->OnComponentHit.AddDynamic(this, &AFFAircraft::HitHandle);
+}
+
+void AFFAircraft::HitHandle(UPrimitiveComponent* HitComponent,
+                            AActor* OtherActor,
+                            UPrimitiveComponent* OtherComp,
+                            FVector NormalImpulse,
+                            const FHitResult& Hit) {
+  UGameplayStatics::ApplyDamage(this, 0.2f, GetInstigatorController(), this,
+                                HitDamageType);
 }
 
 void AFFAircraft::BeginPrimaryFire() {
