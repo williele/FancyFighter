@@ -21,13 +21,29 @@ class FANCYFIGHTER_API AFFBullet : public AActor {
             VisibleAnywhere,
             BlueprintReadOnly,
             meta = (AllowPrivateAccess = "true"))
-  class UProjectileMovementComponent* ProjectileComponent;
+  class UCapsuleComponent* CapsuleComp;
 
   UPROPERTY(Category = Components,
             VisibleAnywhere,
             BlueprintReadOnly,
             meta = (AllowPrivateAccess = "true"))
-  class UFFLimitInScene* LimitInSceneComponent;
+  class UProjectileMovementComponent* ProjectileComp;
+
+  UPROPERTY(Category = Components,
+            VisibleAnywhere,
+            BlueprintReadOnly,
+            meta = (AllowPrivateAccess = "true"))
+  class UFFLimitInScene* LimitInSceneComp;
+
+ private:
+  // Event handle
+  UFUNCTION()
+  void OverlapHandle(UPrimitiveComponent* OverlappedComponent,
+                     AActor* OtherActor,
+                     UPrimitiveComponent* OtherComp,
+                     int32 OtherBodyIndex,
+                     bool bFromSweep,
+                     const FHitResult& SweepResult);
 
  protected:
   // Called when the game starts or when spawned

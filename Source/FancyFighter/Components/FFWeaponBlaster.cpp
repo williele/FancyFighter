@@ -12,8 +12,12 @@ void UFFWeaponBlaster::DoFire() {
     return;
 
   // Pawn the bullet
+  FActorSpawnParameters SpawnParameters;
+  SpawnParameters.Owner = GetOwner();
+
   AFFBullet* Bullet = GetWorld()->SpawnActor<AFFBullet>(
-      GetBulletClass(), GetComponentLocation(), GetComponentRotation());
+      GetBulletClass(), GetComponentLocation(), GetComponentRotation(),
+      SpawnParameters);
 
   // Pawn emitter
   UGameplayStatics::SpawnEmitterAttached(GetMuzzleEffect(), this, NAME_None);
