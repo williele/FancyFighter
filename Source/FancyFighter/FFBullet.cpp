@@ -42,6 +42,12 @@ void AFFBullet::OverlapHandle(UPrimitiveComponent* OverlappedComponent,
                                   DamageType);
   }
 
+  if (ImpactEffect) {
+    UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect,
+                                             SweepResult.ImpactPoint,
+                                             SweepResult.ImpactNormal.Rotation());
+  }
+
   Destroy();
 }
 

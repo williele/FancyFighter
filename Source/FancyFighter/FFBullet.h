@@ -35,11 +35,16 @@ class FANCYFIGHTER_API AFFBullet : public AActor {
             meta = (AllowPrivateAccess = "true"))
   class UFFLimitInScene* LimitInSceneComp;
 
+  UPROPERTY(Category = VisualEffects,
+            EditDefaultsOnly,
+            meta = (AllowPrivateAccess = "true"))
+  class UParticleSystem* ImpactEffect;
+
  private:
   // Misc
   float BaseDamage = 0.0f;
 
-	UPROPERTY(Category = Bullet,
+  UPROPERTY(Category = Bullet,
             VisibleAnywhere,
             BlueprintReadOnly,
             meta = (AllowPrivateAccess = "true"))
