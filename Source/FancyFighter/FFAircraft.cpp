@@ -62,7 +62,7 @@ void AFFAircraft::HitHandle(UPrimitiveComponent* HitComponent,
                             UPrimitiveComponent* OtherComp,
                             FVector NormalImpulse,
                             const FHitResult& Hit) {
-  float Damage = MovementComp->Velocity.Size() / 1000.0f;
+  float Damage = MovementComp->Velocity.Size() / 10000.0f;
   UGameplayStatics::ApplyDamage(this, Damage, GetInstigatorController(),
                                 OtherActor, HitDamageType);
   UGameplayStatics::ApplyDamage(OtherActor, Damage, GetInstigatorController(),
