@@ -3,6 +3,7 @@
 #include "FFBullet.h"
 #include <Components/CapsuleComponent.h>
 #include <GameFramework/ProjectileMovementComponent.h>
+#include <Kismet/GameplayStatics.h>
 #include "Components/FFLimitInScene.h"
 
 // Sets default values
@@ -34,6 +35,13 @@ void AFFBullet::OverlapHandle(UPrimitiveComponent* OverlappedComponent,
                               const FHitResult& SweepResult) {
   if (OtherActor == nullptr || OtherActor == GetOwner())
     return;
+
+  if (GetOwner()) {
+    UGameplayStatics::ApplyDamage(OtherActor, BaseDamage,
+                                  GetInstigatorController(), GetOwner(),
+                                  DamageType);
+  }
+
   Destroy();
 }
 

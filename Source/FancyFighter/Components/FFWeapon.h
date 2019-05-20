@@ -27,6 +27,11 @@ class FANCYFIGHTER_API UFFWeapon : public USceneComponent {
             meta = (AllowPrivateAccess = "true"))
   float FireRate = 0.2f;
 
+	UPROPERTY(Category = Weapon,
+            EditDefaultsOnly,
+            meta = (AllowPrivateAccess = "true"))
+  float BaseDamage = 10.0f;
+
   UPROPERTY(Category = Weapon,
             EditDefaultsOnly,
             meta = (AllowPrivateAccess = "true"))
@@ -44,6 +49,8 @@ class FANCYFIGHTER_API UFFWeapon : public USceneComponent {
   bool GetIsPrimaryWeapon() { return bIsPrimaryWeapon; }
 
   TSubclassOf<class AFFBullet> GetBulletClass() { return BulletClass; }
+
+	float GetBaseDamage() { return BaseDamage; }
 
   class UParticleSystem* GetMuzzleEffect() {
     return MuzzleEffect;

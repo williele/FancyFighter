@@ -18,6 +18,9 @@ void UFFWeaponBlaster::DoFire() {
   AFFBullet* Bullet = GetWorld()->SpawnActor<AFFBullet>(
       GetBulletClass(), GetComponentLocation(), GetComponentRotation(),
       SpawnParameters);
+  if (Bullet) {
+    Bullet->SetupBaseDamage(GetBaseDamage());
+  }
 
   // Pawn emitter
   UGameplayStatics::SpawnEmitterAttached(GetMuzzleEffect(), this, NAME_None);

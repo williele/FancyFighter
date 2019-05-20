@@ -36,6 +36,16 @@ class FANCYFIGHTER_API AFFBullet : public AActor {
   class UFFLimitInScene* LimitInSceneComp;
 
  private:
+  // Misc
+  float BaseDamage = 0.0f;
+
+	UPROPERTY(Category = Bullet,
+            VisibleAnywhere,
+            BlueprintReadOnly,
+            meta = (AllowPrivateAccess = "true"))
+  class TSubclassOf<UDamageType> DamageType;
+
+ private:
   // Event handle
   UFUNCTION()
   void OverlapHandle(UPrimitiveComponent* OverlappedComponent,
@@ -52,4 +62,8 @@ class FANCYFIGHTER_API AFFBullet : public AActor {
  public:
   // Called every frame
   virtual void Tick(float DeltaTime) override;
+
+ public:
+  // Setup
+  void SetupBaseDamage(float Damage) { BaseDamage = Damage; }
 };
