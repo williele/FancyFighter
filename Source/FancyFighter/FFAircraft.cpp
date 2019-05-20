@@ -123,8 +123,10 @@ void AFFAircraft::TickFire(float DeltaTime) {
 
 void AFFAircraft::TickEngine(float DeltaTime) {
   for (UFFEngineEffectComponent* EngineEffect : EngineEffects) {
-    EngineEffect->UpdateVelocity(MovementComp->Velocity.Size() /
-                                 MovementComp->GetMaxSpeed());
+    float Velocity = FMath::Clamp(
+        MovementComp->Velocity.Size() / MovementComp->GetMaxSpeed(), 0.4f,
+        1.0f);
+    EngineEffect->UpdateVelocity(Velocity);
   }
 }
 
