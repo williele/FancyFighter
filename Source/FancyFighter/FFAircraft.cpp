@@ -7,6 +7,7 @@
 #include <Components/StaticMeshComponent.h>
 #include <GameFramework/FloatingPawnMovement.h>
 #include <GameFramework/SpringArmComponent.h>
+#include "Components/FFEngineEffectComponent.h"
 #include "Components/FFPlayerMovementComponnet.h"
 #include "Components/FFWeapon.h"
 
@@ -67,6 +68,7 @@ void AFFAircraft::BeginPlay() {
   Super::BeginPlay();
 
   InitializeGun();
+  InitializeEffects();
 }
 
 void AFFAircraft::InitializeGun() {
@@ -80,6 +82,11 @@ void AFFAircraft::InitializeGun() {
       SecondaryWeapons.Add(Weapons[Index]);
     }
   }
+}
+
+void AFFAircraft::InitializeEffects() {
+  // Engine effects
+  GetComponents<UFFEngineEffectComponent>(EngineEffects);
 }
 
 void AFFAircraft::TickMovement(float DeltaTime) {
@@ -114,12 +121,20 @@ void AFFAircraft::TickFire(float DeltaTime) {
   }
 }
 
+void AFFAircraft::TickEngine(float DeltaTime) {
+  for (UFFEngineEffectComponent* EngineEffect : EngineEffects) {
+    EngineEffect->UpdateVelocity(MovementComp->Velocity.Size() /
+                                 MovementComp->GetMaxSpeed());
+  }
+}
+
 // Called every frame
 void AFFAircraft::Tick(float DeltaTime) {
   Super::Tick(DeltaTime);
 
   TickMovement(DeltaTime);
   TickFire(DeltaTime);
+  TickEngine(DeltaTime);
 }
 
 // Called to bind functionality to input

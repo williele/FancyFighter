@@ -20,7 +20,7 @@ class FANCYFIGHTER_API AFFAircraft : public APawn {
   UPROPERTY(Category = Aircraft, EditDefaultsOnly, BlueprintReadOnly)
   float MaxRoll = 40.0f;
 
-	UPROPERTY(Category = Aircraft, EditDefaultsOnly, BlueprintReadOnly)
+  UPROPERTY(Category = Aircraft, EditDefaultsOnly, BlueprintReadOnly)
   float TurnSpeed = 2.0f;
 
   UPROPERTY(Category = Aircraft, EditDefaultsOnly, BlueprintReadOnly)
@@ -52,7 +52,7 @@ class FANCYFIGHTER_API AFFAircraft : public APawn {
             meta = (AllowPrivateAccess = "true"))
   class UCameraComponent* CameraComp;
 
-	UPROPERTY(Category = Components,
+  UPROPERTY(Category = Components,
             VisibleAnywhere,
             BlueprintReadOnly,
             meta = (AllowPrivateAccess = "true"))
@@ -74,6 +74,7 @@ class FANCYFIGHTER_API AFFAircraft : public APawn {
  private:
   // Initialize functions
   void InitializeGun();
+  void InitializeEffects();
 
  public:
   // Called every frame
@@ -87,6 +88,7 @@ class FANCYFIGHTER_API AFFAircraft : public APawn {
   // Tick functions
   void TickMovement(float DeltaTime);
   void TickFire(float DeltaTime);
+  void TickEngine(float DeltaTime);
 
  protected:
   // Misc
@@ -94,6 +96,7 @@ class FANCYFIGHTER_API AFFAircraft : public APawn {
 
   TArray<class UFFWeapon*> PrimaryWeapons;
   TArray<class UFFWeapon*> SecondaryWeapons;
+  TArray<class UFFEngineEffectComponent*> EngineEffects;
 
   UPROPERTY(Category = InputName, EditDefaultsOnly)
   FName VerticalInputName = FName("Vertical");
