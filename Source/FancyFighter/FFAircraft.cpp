@@ -55,9 +55,6 @@ AFFAircraft::AFFAircraft() {
 
   DurabilityComp =
       CreateDefaultSubobject<UFFDurabilityComponent>(TEXT("Durability"));
-
-  // Binding events
-  CapsuleComp->OnComponentHit.AddDynamic(this, &AFFAircraft::HitHandle);
 }
 
 void AFFAircraft::HitHandle(UPrimitiveComponent* HitComponent,
@@ -65,8 +62,11 @@ void AFFAircraft::HitHandle(UPrimitiveComponent* HitComponent,
                             UPrimitiveComponent* OtherComp,
                             FVector NormalImpulse,
                             const FHitResult& Hit) {
-  UGameplayStatics::ApplyDamage(this, 0.2f, GetInstigatorController(), this,
-                                HitDamageType);
+  float Damage = MovementComp->Velocity.Size() / 1000.0f;
+  UGameplayStatics::ApplyDamage(this, Damage, GetInstigatorController(),
+                                OtherActor, HitDamageType);
+  UGameplayStatics::ApplyDamage(OtherActor, Damage, GetInstigatorController(),
+                                this, HitDamageType);
 }
 
 void AFFAircraft::BeginPrimaryFire() {
@@ -88,8 +88,14 @@ void AFFAircraft::SecondaryFire() {
 void AFFAircraft::BeginPlay() {
   Super::BeginPlay();
 
+  InitializeEvents();
   InitializeGun();
   InitializeEffects();
+}
+
+void AFFAircraft::InitializeEvents() {
+  // Binding events
+  CapsuleComp->OnComponentHit.AddDynamic(this, &AFFAircraft::HitHandle);
 }
 
 void AFFAircraft::InitializeGun() {

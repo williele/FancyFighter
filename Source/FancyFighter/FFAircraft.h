@@ -94,6 +94,7 @@ class FANCYFIGHTER_API AFFAircraft : public APawn {
 
  private:
   // Initialize functions
+  void InitializeEvents();
   void InitializeGun();
   void InitializeEffects();
 
