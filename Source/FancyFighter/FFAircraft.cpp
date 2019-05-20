@@ -3,6 +3,7 @@
 #include "FFAircraft.h"
 #include <Camera/CameraComponent.h>
 #include <Components/ArrowComponent.h>
+#include <Components/CapsuleComponent.h>
 #include <Components/InputComponent.h>
 #include <Components/StaticMeshComponent.h>
 #include <GameFramework/FloatingPawnMovement.h>
@@ -17,7 +18,9 @@ AFFAircraft::AFFAircraft() {
   // performance if you don't need it.
   PrimaryActorTick.bCanEverTick = true;
 
-  RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+  // RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+  CapsuleComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
+  RootComponent = (USceneComponent*)CapsuleComp;
 
   AircraftContainComp =
       CreateDefaultSubobject<USceneComponent>(TEXT("AircraftContain"));
@@ -124,8 +127,7 @@ void AFFAircraft::TickFire(float DeltaTime) {
 void AFFAircraft::TickEngine(float DeltaTime) {
   for (UFFEngineEffectComponent* EngineEffect : EngineEffects) {
     float Velocity = FMath::Clamp(
-        MovementComp->Velocity.Size() / MovementComp->GetMaxSpeed(), 0.4f,
-        1.0f);
+        InputComponent->GetAxisValue(VerticalInputName), 0.4f, 1.0f);
     EngineEffect->UpdateVelocity(Velocity);
   }
 }

@@ -32,6 +32,12 @@ class FANCYFIGHTER_API AFFAircraft : public APawn {
             VisibleAnywhere,
             BlueprintReadOnly,
             meta = (AllowPrivateAccess = "true"))
+  class UCapsuleComponent* CapsuleComp;
+
+  UPROPERTY(Category = Components,
+            VisibleAnywhere,
+            BlueprintReadOnly,
+            meta = (AllowPrivateAccess = "true"))
   class USceneComponent* AircraftContainComp;
 
   UPROPERTY(Category = Components,
